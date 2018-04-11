@@ -29,6 +29,25 @@ var handleAgeUp = function handleAgeUp(e) {
     });
 };
 
+var handleSpell = function handleSpell(e) {
+    e.preventDefault();
+
+    $("#adventurerMessage").animate({ width: 'hide' }, 350);
+
+    if ($("#spellName").val() == '' || $("#spellLevel").val() == '') {
+        handleError("Dear Adventurer, you must fill all fields");
+        return false;
+    }
+
+    console.dir($("#spellForm").serialize());
+
+    sendAjax('POST', $("#spellForm").attr("action"), $("#spellForm").serialize(), function () {
+        loadSpellsFromServer(token);
+    });
+
+    return false;
+};
+
 var AdventurerForm = function AdventurerForm(props) {
     return React.createElement(
         "form",
@@ -48,9 +67,9 @@ var AdventurerForm = function AdventurerForm(props) {
         React.createElement(
             "label",
             { htmlFor: "age" },
-            "Age: "
+            "Level: "
         ),
-        React.createElement("input", { id: "adventurerAge", type: "text", name: "age", placeholder: "Adventurer Age" }),
+        React.createElement("input", { id: "adventurerAge", type: "text", name: "age", placeholder: "Adventurer Level" }),
         React.createElement(
             "select",
             { id: "adventurerClass", name: "class" },
@@ -146,18 +165,134 @@ var AdventurerList = function AdventurerList(props) {
 
 var loadAdventurersFromServer = function loadAdventurersFromServer(csrf) {
     sendAjax('GET', '/getAdventurers', null, function (data) {
-        ReactDOM.render(React.createElement(AdventurerList, { adventurers: data.adventurer, csrf: csrf }), document.querySelector("#adventurers"));
+        ReactDOM.render(React.createElement(AdventurerList, { adventurers: data.adventurer, csrf: csrf }), document.querySelector("#data"));
     });
 };
 
+var createAdventurerWindow = function createAdventurerWindow(csrf) {
+    ReactDOM.render(React.createElement(AdventurerForm, { csrf: csrf }), document.querySelector("#make"));
+
+    ReactDOM.render(React.createElement(AdventurerList, { adventurers: [], csrf: csrf }), document.querySelector("#data"));
+};
+
+var SpellForm = function SpellForm(props) {
+    return React.createElement(
+        "form",
+        { id: "spellForm",
+            onSubmit: handleSpell,
+            name: "spellForm",
+            action: "/spellMaker",
+            method: "POST",
+            className: "spellForm"
+        },
+        React.createElement(
+            "label",
+            { htmlFor: "name" },
+            "Name: "
+        ),
+        React.createElement("input", { id: "spellName", type: "text", name: "name", placeholder: "Spell Name" }),
+        React.createElement(
+            "label",
+            { htmlFor: "level" },
+            "Level: "
+        ),
+        React.createElement("input", { id: "spellLevel", type: "text", name: "level", placeholder: "Spell Level" }),
+        React.createElement(
+            "label",
+            { htmlFor: "purpose" },
+            "Spell's Purpose: "
+        ),
+        React.createElement("input", { id: "spellPurpose", type: "text", name: "purpose", placeholder: "Spell's Purpose" }),
+        React.createElement("input", { id: "csrfValue", type: "hidden", name: "_csrf", value: props.csrf }),
+        React.createElement("input", { className: "makeSpellSubmit", type: "submit", value: "Make Spell" })
+    );
+};
+
+var SpellList = function SpellList(props) {
+    if (props.spells.length === 0) {
+        return React.createElement(
+            "div",
+            { className: "spellList" },
+            React.createElement(
+                "h3",
+                { className: "emptySpells" },
+                "No Spells creasted yet"
+            )
+        );
+    }
+
+    var spellNodes = props.spells.map(function (spell) {
+        return React.createElement(
+            "div",
+            { "data-key": spell._id, className: "adventurer" },
+            React.createElement("img", { src: "/assets/img/adventurerface.png", alt: "adventurer face", className: "adventurerFace" }),
+            React.createElement(
+                "h3",
+                { className: "adventurerName" },
+                "Name: ",
+                spell.name
+            ),
+            React.createElement(
+                "h3",
+                { className: "adventurerAge" },
+                "Level: ",
+                spell.level
+            ),
+            React.createElement(
+                "h3",
+                { className: "adventurerClass" },
+                "Spell's Purpose: ",
+                spell.purpose
+            )
+        );
+    });
+
+    return React.createElement(
+        "div",
+        { className: "spellList" },
+        spellNodes
+    );
+};
+
+var loadSpellsFromServer = function loadSpellsFromServer(csrf) {
+    sendAjax('GET', '/getSpells', null, function (data) {
+        ReactDOM.render(React.createElement(SpellList, { spells: data.spell, csrf: csrf }), document.querySelector("#data"));
+    });
+};
+
+var createSpellWindow = function createSpellWindow(csrf) {
+    ReactDOM.render(React.createElement(SpellForm, { csrf: csrf }), document.querySelector("#make"));
+
+    ReactDOM.render(React.createElement(SpellList, { spells: [], csrf: csrf }), document.querySelector("#data"));
+};
+
 var setup = function setup(csrf) {
+
     token = csrf;
 
-    ReactDOM.render(React.createElement(AdventurerForm, { csrf: csrf }), document.querySelector("#makeAdventurer"));
+    var adventurerButton = document.querySelector("#adventurerButton");
+    var spellButton = document.querySelector("#spellButton");
+    var weaponButton = document.querySelector("#weaponButton");
 
-    ReactDOM.render(React.createElement(AdventurerList, { adventurers: [], csrf: csrf }), document.querySelector("#adventurers"));
+    adventurerButton.addEventListener("click", function (e) {
+        e.preventDefault();
+        createAdventurerWindow(csrf);
+        return false;
+    });
 
-    loadAdventurersFromServer(token);
+    spellButton.addEventListener("click", function (e) {
+        e.preventDefault();
+        createSpellWindow(csrf);
+        return false;
+    });
+
+    weaponButton.addEventListener("click", function (e) {
+        e.preventDefault();
+        createSpellWindow(csrf);
+        return false;
+    });
+
+    createAdventurerWindow(csrf);
 };
 
 var getToken = function getToken() {

@@ -21,7 +21,7 @@ const SpellSchema = new mongoose.Schema({
     required: true,
   },
 
-  function: {
+  purpose: {
     type: String,
     required: true,
   },
@@ -40,8 +40,8 @@ const SpellSchema = new mongoose.Schema({
 
 SpellSchema.statics.toAPI = (doc) => ({
   name: doc.name,
-  level: doc.age,
-  purpose: doc.class,
+  level: doc.level,
+  purpose: doc.purpose,
 });
 
 SpellSchema.statics.findByOwner = (ownerId, callback) => {
@@ -50,16 +50,6 @@ SpellSchema.statics.findByOwner = (ownerId, callback) => {
   };
 
   return SpellModel.find(search).select('name level purpose').exec(callback);
-};
-
-SpellSchema.statics.upAge = (ownerId, searchedId, callback) => {
-  const search = {
-    owner: convertId(ownerId),
-    _id: convertId(searchedId),
-  };
-
-
-  return SpellModel.findOne(search).exec(callback);
 };
 
 SpellModel = mongoose.model('Spell', SpellSchema);

@@ -11,6 +11,8 @@ const router = (app) => {
   app.get('/maker', mid.requiresLogin, controllers.Adventurer.makerPage);
   app.post('/maker', mid.requiresLogin, controllers.Adventurer.make);
   app.post('/age', mid.requiresLogin, controllers.Adventurer.ageUp);
+  app.get('/getSpells', mid.requiresLogin, controllers.Spell.spellPage);
+  app.post('/spellMaker', mid.requiresLogin, controllers.Spell.makeSpell);
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
 };
 

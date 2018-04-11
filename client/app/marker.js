@@ -27,6 +27,25 @@ const handleAgeUp = (e) => {
     });
 }
 
+const handleSpell = (e) => {
+    e.preventDefault();
+    
+    $("#adventurerMessage").animate({width: 'hide'}, 350);
+    
+    if($("#spellName").val() == '' || $("#spellLevel").val() == '') {
+        handleError("Dear Adventurer, you must fill all fields");
+        return false;
+    }
+    
+    console.dir($("#spellForm").serialize())
+            
+    sendAjax('POST', $("#spellForm").attr("action"), $("#spellForm").serialize(), function(){
+        loadSpellsFromServer(token);
+    });
+    
+    return false;
+};
+
 const AdventurerForm = (props) => {
     return (
     <form id="adventurerForm" 
@@ -38,8 +57,8 @@ const AdventurerForm = (props) => {
     >
     <label htmlFor="name">Name: </label>
     <input id="adventurerName" type="text" name="name" placeholder="Adventurer Name"/>
-    <label htmlFor="age">Age: </label>
-    <input id="adventurerAge" type="text" name="age" placeholder="Adventurer Age"/>
+    <label htmlFor="age">Level: </label>
+    <input id="adventurerAge" type="text" name="age" placeholder="Adventurer Level"/>
     <select id="adventurerClass" name="class">
          <option value="Barbarian">Barbarian</option>
          <option value="Monk">Monk</option>  
@@ -92,26 +111,122 @@ const AdventurerList = function(props) {
     );
 };
 
+
+
 const loadAdventurersFromServer = (csrf) => {
     sendAjax('GET', '/getAdventurers', null, (data) => {
         ReactDOM.render(
-            <AdventurerList adventurers={data.adventurer} csrf={csrf} />, document.querySelector("#adventurers")
+            <AdventurerList adventurers={data.adventurer} csrf={csrf} />, document.querySelector("#data")
         );
     });
 };
 
+const createAdventurerWindow = (csrf) => {
+    ReactDOM.render(
+        <AdventurerForm csrf={csrf} />, document.querySelector("#make")
+    );
+    
+    ReactDOM.render(
+        <AdventurerList adventurers={[]} csrf={csrf}/>, document.querySelector("#data")
+    );
+}
+
+const SpellForm = (props) => {
+    return (
+    <form id="spellForm" 
+        onSubmit={handleSpell}
+        name="spellForm"
+        action="/spellMaker"
+        method="POST"
+        className="spellForm"
+    >
+    <label htmlFor="name">Name: </label>
+    <input id="spellName" type="text" name="name" placeholder="Spell Name"/>
+    <label htmlFor="level">Level: </label>
+    <input id="spellLevel" type="text" name="level" placeholder="Spell Level"/>
+    <label htmlFor="purpose">Spell's Purpose: </label>
+    <input id="spellPurpose" type="text" name="purpose" placeholder="Spell's Purpose"/>
+    <input id="csrfValue" type="hidden" name="_csrf" value={props.csrf}/>
+    <input className="makeSpellSubmit" type="submit" value="Make Spell" />
+    </form>
+    );
+};
+
+const SpellList = function(props) {
+    if(props.spells.length === 0) {
+        return (
+            <div className="spellList">
+                <h3 className="emptySpells">No Spells creasted yet</h3>
+            </div>
+        );
+    }
+    
+    const spellNodes = props.spells.map(function(spell) {
+        return (
+            <div data-key={spell._id} className="adventurer">
+                <img src="/assets/img/adventurerface.png" alt="adventurer face" className="adventurerFace" />
+                <h3 className="adventurerName">Name: {spell.name}</h3>
+                <h3 className="adventurerAge">Level: {spell.level}</h3>
+                <h3 className="adventurerClass">Spell's Purpose: {spell.purpose}</h3>
+            </div>
+        );
+    });
+    
+    return (
+    <div className="spellList">
+        {spellNodes}
+    </div>
+    );
+};
+
+
+
+const loadSpellsFromServer = (csrf) => {
+    sendAjax('GET', '/getSpells', null, (data) => {
+        ReactDOM.render(
+            <SpellList spells={data.spell} csrf={csrf} />, document.querySelector("#data")
+        );
+    });
+};
+
+
+const createSpellWindow = (csrf) => {
+    ReactDOM.render(
+        <SpellForm csrf={csrf} />, document.querySelector("#make")
+    );
+    
+    ReactDOM.render(
+        <SpellList spells={[]} csrf={csrf}/>, document.querySelector("#data")
+    );
+}
+
 const setup = function(csrf) {
+    
     token = csrf;
     
-    ReactDOM.render(
-        <AdventurerForm csrf={csrf} />, document.querySelector("#makeAdventurer")
-    );
+    const adventurerButton = document.querySelector("#adventurerButton");
+    const spellButton = document.querySelector("#spellButton");
+    const weaponButton = document.querySelector("#weaponButton")
     
-    ReactDOM.render(
-        <AdventurerList adventurers={[]} csrf={csrf}/>, document.querySelector("#adventurers")
-    );
+    adventurerButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        createAdventurerWindow(csrf);
+        return false;
+    });
     
-    loadAdventurersFromServer(token);    
+    spellButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        createSpellWindow(csrf);
+        return false;
+    });
+    
+    weaponButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        createSpellWindow(csrf);
+        return false;
+    });
+    
+    createAdventurerWindow(csrf); 
 };
 
 const getToken = () => {

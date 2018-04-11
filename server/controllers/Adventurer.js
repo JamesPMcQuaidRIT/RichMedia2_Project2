@@ -64,7 +64,7 @@ const ageUpAdventurer = (req, res) => {
       console.log(err);
       return res.status(400).json({ error: 'An error occured' });
     }
-    
+
     console.dir(req.body);
 
     const adventurer = doc;
