@@ -8,8 +8,8 @@ const spellPage = (req, res) => {
       console.log(err);
       return res.status(400).json({ error: 'An error occurred' });
     }
-
-    return res.render('app', { csrfToken: req.csrfToken(), spells: docs });
+      
+    return res.json({spell: docs});
   });
 };
 
@@ -49,6 +49,8 @@ const getSpells = (request, response) => {
   const res = response;
 
   return Spell.SpellModel.findByOwner(req.session.account._id, (err, docs) => {
+    console.dir(docs);
+      
     if (err) {
       console.log(err);
       return res.status(400).json({ error: 'An error occured' });

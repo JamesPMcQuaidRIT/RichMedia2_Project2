@@ -138,7 +138,7 @@ const AdventurerList = function(props) {
                     className="ageForm"
                 >
                     <input type="hidden" name="_csrf" value={props.csrf}/>
-                    <input id="adventurerNameCheck" name="_id" value={adventurer._id} placeholder="Adventurer Name"/>
+                    <input id="adventurerNameCheck" name="_id" type="hidden" value={adventurer._id} placeholder="Adventurer Name"/>
                     <input className="ageButton" type="submit" value="Level Up"/>
                 </form>
             </div>
@@ -170,6 +170,8 @@ const createAdventurerWindow = (csrf) => {
     ReactDOM.render(
         <AdventurerList adventurers={[]} csrf={csrf}/>, document.querySelector("#data")
     );
+    
+    loadAdventurersFromServer(csrf);
 }
 
 const SpellForm = (props) => {
@@ -197,7 +199,7 @@ const SpellList = function(props) {
     if(props.spells.length === 0) {
         return (
             <div className="spellList">
-                <h3 className="emptySpells">No Spells creasted yet</h3>
+                <h3 className="emptySpells">No Spells created yet</h3>
             </div>
         );
     }
@@ -239,6 +241,8 @@ const createSpellWindow = (csrf) => {
     ReactDOM.render(
         <SpellList spells={[]} csrf={csrf}/>, document.querySelector("#data")
     );
+    
+    loadSpellsFromServer(csrf);
 }
 
 const WeaponForm = (props) => {
@@ -270,7 +274,7 @@ const WeaponList = function(props) {
     if(props.weapons.length === 0) {
         return (
             <div className="weaponList">
-                <h3 className="emptyWeapons">No Weapons creasted yet</h3>
+                <h3 className="emptyWeapons">No Weapons created yet</h3>
             </div>
         );
     }
@@ -312,7 +316,13 @@ const createWeaponWindow = (csrf) => {
     ReactDOM.render(
         <WeaponList weapons={[]} csrf={csrf}/>, document.querySelector("#data")
     );
+    
+    loadWeaponsFromServer(csrf);
 }
+
+const EmptyForm = (props) => {
+    return(null);
+};
 
 const PasswordWindow = (props) => {
     return (
@@ -335,6 +345,11 @@ const PasswordWindow = (props) => {
 
 const createPasswordWindow = (csrf) => {
     ReactDOM.render(
+    <EmptyForm />,
+    document.querySelector("#make")
+    );
+    
+    ReactDOM.render(
     <PasswordWindow csrf={csrf} />,
     document.querySelector("#data")
     );
@@ -346,7 +361,8 @@ const setup = function(csrf) {
     
     const adventurerButton = document.querySelector("#adventurerButton");
     const spellButton = document.querySelector("#spellButton");
-    const weaponButton = document.querySelector("#weaponButton")
+    const weaponButton = document.querySelector("#weaponButton");
+    const passwordButton = document.querySelector("#passwordButton");
     
     adventurerButton.addEventListener("click", (e) => {
         e.preventDefault();
@@ -363,6 +379,12 @@ const setup = function(csrf) {
     weaponButton.addEventListener("click", (e) => {
         e.preventDefault();
         createWeaponWindow(csrf);
+        return false;
+    });
+    
+    passwordButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        createPasswordWindow(csrf);
         return false;
     });
     

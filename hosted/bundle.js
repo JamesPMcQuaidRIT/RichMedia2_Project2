@@ -191,7 +191,7 @@ var AdventurerList = function AdventurerList(props) {
                     className: "ageForm"
                 },
                 React.createElement("input", { type: "hidden", name: "_csrf", value: props.csrf }),
-                React.createElement("input", { id: "adventurerNameCheck", name: "_id", value: adventurer._id, placeholder: "Adventurer Name" }),
+                React.createElement("input", { id: "adventurerNameCheck", name: "_id", type: "hidden", value: adventurer._id, placeholder: "Adventurer Name" }),
                 React.createElement("input", { className: "ageButton", type: "submit", value: "Level Up" })
             )
         );
@@ -214,6 +214,8 @@ var createAdventurerWindow = function createAdventurerWindow(csrf) {
     ReactDOM.render(React.createElement(AdventurerForm, { csrf: csrf }), document.querySelector("#make"));
 
     ReactDOM.render(React.createElement(AdventurerList, { adventurers: [], csrf: csrf }), document.querySelector("#data"));
+
+    loadAdventurersFromServer(csrf);
 };
 
 var SpellForm = function SpellForm(props) {
@@ -257,7 +259,7 @@ var SpellList = function SpellList(props) {
             React.createElement(
                 "h3",
                 { className: "emptySpells" },
-                "No Spells creasted yet"
+                "No Spells created yet"
             )
         );
     }
@@ -305,6 +307,8 @@ var createSpellWindow = function createSpellWindow(csrf) {
     ReactDOM.render(React.createElement(SpellForm, { csrf: csrf }), document.querySelector("#make"));
 
     ReactDOM.render(React.createElement(SpellList, { spells: [], csrf: csrf }), document.querySelector("#data"));
+
+    loadSpellsFromServer(csrf);
 };
 
 var WeaponForm = function WeaponForm(props) {
@@ -360,7 +364,7 @@ var WeaponList = function WeaponList(props) {
             React.createElement(
                 "h3",
                 { className: "emptyWeapons" },
-                "No Weapons creasted yet"
+                "No Weapons created yet"
             )
         );
     }
@@ -408,6 +412,12 @@ var createWeaponWindow = function createWeaponWindow(csrf) {
     ReactDOM.render(React.createElement(WeaponForm, { csrf: csrf }), document.querySelector("#make"));
 
     ReactDOM.render(React.createElement(WeaponList, { weapons: [], csrf: csrf }), document.querySelector("#data"));
+
+    loadWeaponsFromServer(csrf);
+};
+
+var EmptyForm = function EmptyForm(props) {
+    return null;
 };
 
 var PasswordWindow = function PasswordWindow(props) {
@@ -438,6 +448,8 @@ var PasswordWindow = function PasswordWindow(props) {
 };
 
 var createPasswordWindow = function createPasswordWindow(csrf) {
+    ReactDOM.render(React.createElement(EmptyForm, null), document.querySelector("#make"));
+
     ReactDOM.render(React.createElement(PasswordWindow, { csrf: csrf }), document.querySelector("#data"));
 };
 
@@ -448,6 +460,7 @@ var setup = function setup(csrf) {
     var adventurerButton = document.querySelector("#adventurerButton");
     var spellButton = document.querySelector("#spellButton");
     var weaponButton = document.querySelector("#weaponButton");
+    var passwordButton = document.querySelector("#passwordButton");
 
     adventurerButton.addEventListener("click", function (e) {
         e.preventDefault();
@@ -464,6 +477,12 @@ var setup = function setup(csrf) {
     weaponButton.addEventListener("click", function (e) {
         e.preventDefault();
         createWeaponWindow(csrf);
+        return false;
+    });
+
+    passwordButton.addEventListener("click", function (e) {
+        e.preventDefault();
+        createPasswordWindow(csrf);
         return false;
     });
 

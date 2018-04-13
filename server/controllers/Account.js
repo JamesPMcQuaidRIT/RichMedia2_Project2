@@ -77,28 +77,17 @@ const signup = (request, response) => {
   });
 };
 
-/*const changePassword = (request, response) => { 
-    Adventurer.AdventurerModel.changePassword(req.session.account._id, req.body._id, (err, doc) => {
-    if (err) {
-      console.log(err);
-      return res.status(400).json({ error: 'An error occured' });
-    }
-
-    console.dir(req.body);
-
-    const adventurer = doc;
-
-    adventurer.age++;
-
-    const newAdventurer = new Adventurer.AdventurerModel(adventurer);
-
-    const adventurerPromise = newAdventurer.save();
-
-    adventurerPromise.then(() => res.json({ redirect: '/maker' }));
-
-    return res.json({ adventurer: doc });
-  });
-};*/
+const changePassword = (request, response) => { 
+    Account.AccountModel.generateHash(req.body.pass, (salt, hash) => {
+                                      
+        Account.AccountModel.changePassword(req.session.account._id, req.body.pass, (err, doc) => {
+        if (err) {
+          console.log(err);
+          return res.status(400).json({ error: 'An error occured' });
+        }
+      });
+    };
+};
 
 const getToken = (request, response) => {
   const req = request;
