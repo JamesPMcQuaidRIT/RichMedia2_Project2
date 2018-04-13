@@ -47,11 +47,20 @@ nav:nth-child(1) {
     background-color: #7F6A59;
 }
 
+.empty{
+    margin-top: 10px;
+    margin-left: 35%;
+    margin-right: 35%;
+    font-size: 3.0em;
+    font-weight: bold;
+}
+
 .adventurerForm {
     border: 2px solid #705D4E;
     height: 35px;
     width: 750px;
     margin-top:0px;
+    margin: 0 auto;
     padding-top:10px;
     background-color: #5E4E42;
     border-bottom-right-radius: 4px;
@@ -91,6 +100,106 @@ nav:nth-child(1) {
 }
 
 .makeAdventurerSubmit:hover {
+    transition: background-color 0.4s ease;
+    background-color: #705D4E;
+}
+
+.spellForm {
+    border: 2px solid #705D4E;
+    height: 35px;
+    width: 1000px;
+    margin-top:0px;
+    padding-top:10px;
+    background-color: #5E4E42;
+    margin: 0 auto;
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.spellForm label {
+    display: inline-block;
+    width: 100px;
+    margin-left: 10px;
+    font-size: 1.2em;
+    float: left;
+    color: white;
+}
+
+.spellForm select {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.spellForm input[type=text] {
+    float:left;
+}
+
+.makeSpellSubmit {
+    transition: background-color 0.4s ease;
+    display: inline;
+    width: 120px;
+    background-color: #5E4E42;
+    border-radius: 2px;
+    color: white;
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+.makeSpellSubmit:link, .makevSubmit:visited, .makeSpellSubmit:hover, .makeSpellSubmit:active {
+    color: white;
+}
+
+.makeSpellSubmit:hover {
+    transition: background-color 0.4s ease;
+    background-color: #705D4E;
+}
+
+.weaponForm {
+    border: 2px solid #705D4E;
+    height: 35px;
+    width: 100%;
+    margin-top:0px;
+    padding-top:10px;
+    background-color: #5E4E42;
+    margin: 0 auto;
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.weaponForm label {
+    display: inline-block;
+    width: 100px;
+    margin-left: 10px;
+    font-size: 1.2em;
+    float: left;
+    color: white;
+}
+
+.weaponForm select {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.weaponForm input[type=text] {
+    float:left;
+}
+
+.makeWeaponSubmit {
+    transition: background-color 0.4s ease;
+    display: inline;
+    width: 120px;
+    background-color: #5E4E42;
+    border-radius: 2px;
+    color: white;
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+.makeWeaponSubmit:link, .makevSubmit:visited, .makeSpellSubmit:hover, .makeSpellSubmit:active {
+    color: white;
+}
+
+.makeWeaponSubmit:hover {
     transition: background-color 0.4s ease;
     background-color: #705D4E;
 }
@@ -232,14 +341,6 @@ img.adventurerFace {
     float:left;
 }
 
-h3.emptyAdventurer {
-    width: 400px;
-    font-size: 1.5em;
-    margin: 0 auto;
-    text-align: center;
-    margin-top: 18px;
-}
-
 h3.adventurerName {
     float:left;
     width: 200px;
@@ -258,7 +359,7 @@ h3.adventurerClass {
 
 
 h3.adventurerAge {
-    float:right;
+    float:left;
     text-align: left;
     width: 100px;
     font-weight: bold;
@@ -280,4 +381,44 @@ h3.adventurerAge {
 
 .adventurer:last-child {
     margin-bottom:10px;
+}
+
+h3.weaponName {
+    float:left;
+    width: 200px;
+    font-weight: bold;
+    padding-left: 35px;
+    font-size: 1.5em;
+}
+
+h3.weaponType {
+    float:left;
+    width: 200px;
+    font-weight: bold;
+    padding-left: 35px;
+    font-size: 1.5em;
+}
+
+h3.weaponRarity {
+    float:left;
+    width: 150px;
+    font-weight: bold;
+    padding-left: 35px;
+    font-size: 1.5em;
+}
+
+h3.weaponDamage {
+    float:left;
+    width: 150px;
+    font-weight: bold;
+    padding-left: 35px;
+    font-size: 1.5em;
+}
+
+h3.weaponDescription {
+    float:left;
+    width: 400px;
+    font-weight: bold;
+    padding-left: 35px;
+    font-size: 1.5em;
 }

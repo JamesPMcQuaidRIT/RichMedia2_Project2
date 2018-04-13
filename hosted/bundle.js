@@ -152,7 +152,7 @@ var AdventurerList = function AdventurerList(props) {
             { className: "adventurerList" },
             React.createElement(
                 "h3",
-                { className: "emptyAdventurer" },
+                { className: "empty" },
                 "No Adventurers yet"
             )
         );
@@ -243,7 +243,7 @@ var SpellForm = function SpellForm(props) {
         React.createElement(
             "label",
             { htmlFor: "purpose" },
-            "Spell's Purpose: "
+            "Purpose: "
         ),
         React.createElement("input", { id: "spellPurpose", type: "text", name: "purpose", placeholder: "Spell's Purpose" }),
         React.createElement("input", { id: "csrfValue", type: "hidden", name: "_csrf", value: props.csrf }),
@@ -258,7 +258,7 @@ var SpellList = function SpellList(props) {
             { className: "spellList" },
             React.createElement(
                 "h3",
-                { className: "emptySpells" },
+                { className: "empty" },
                 "No Spells created yet"
             )
         );
@@ -268,7 +268,7 @@ var SpellList = function SpellList(props) {
         return React.createElement(
             "div",
             { "data-key": spell._id, className: "adventurer" },
-            React.createElement("img", { src: "/assets/img/adventurerface.png", alt: "adventurer face", className: "adventurerFace" }),
+            React.createElement("img", { src: "/assets/img/magicIcon.png", alt: "adventurer face", className: "adventurerFace" }),
             React.createElement(
                 "h3",
                 { className: "adventurerName" },
@@ -284,7 +284,7 @@ var SpellList = function SpellList(props) {
             React.createElement(
                 "h3",
                 { className: "adventurerClass" },
-                "Spell's Purpose: ",
+                "Purpose: ",
                 spell.purpose
             )
         );
@@ -330,7 +330,7 @@ var WeaponForm = function WeaponForm(props) {
         React.createElement(
             "label",
             { htmlFor: "type" },
-            "Weapon Type: "
+            "Type: "
         ),
         React.createElement("input", { id: "weaponType", type: "text", name: "type", placeholder: "Weapon Type" }),
         React.createElement(
@@ -350,7 +350,7 @@ var WeaponForm = function WeaponForm(props) {
             { htmlFor: "description" },
             "Description: "
         ),
-        React.createElement("input", { id: "weaponDescription", type: "text", name: "description", placeholder: "Weapon's Description" }),
+        React.createElement("input", { id: "weaponDescription", type: "text", name: "description", placeholder: "Weapon Description" }),
         React.createElement("input", { id: "csrfValue", type: "hidden", name: "_csrf", value: props.csrf }),
         React.createElement("input", { className: "makeWeaponSubmit", type: "submit", value: "Make Weapon" })
     );
@@ -363,34 +363,47 @@ var WeaponList = function WeaponList(props) {
             { className: "weaponList" },
             React.createElement(
                 "h3",
-                { className: "emptyWeapons" },
+                { className: "empty" },
                 "No Weapons created yet"
             )
         );
     }
 
     var weaponNodes = props.weapons.map(function (weapon) {
+        console.dir(weapon.description);
         return React.createElement(
             "div",
             { "data-key": weapon._id, className: "adventurer" },
-            React.createElement("img", { src: "/assets/img/adventurerface.png", alt: "adventurer face", className: "adventurerFace" }),
+            React.createElement("img", { src: "/assets/img/weaponIcon.png", alt: "adventurer face", className: "adventurerFace" }),
             React.createElement(
                 "h3",
-                { className: "adventurerName" },
+                { className: "weaponName" },
                 "Name: ",
                 weapon.name
             ),
             React.createElement(
                 "h3",
-                { className: "adventurerAge" },
-                "Level: ",
-                weapon.level
+                { className: "weaponType" },
+                "Type: ",
+                weapon.type
             ),
             React.createElement(
                 "h3",
-                { className: "adventurerClass" },
-                "Weapon's Purpose: ",
-                weapon.purpose
+                { className: "weaponRarity" },
+                "Rarity: ",
+                weapon.rarity
+            ),
+            React.createElement(
+                "h3",
+                { className: "weaponDamage" },
+                "Damage: ",
+                weapon.damage
+            ),
+            React.createElement(
+                "h3",
+                { className: "weaponDescription" },
+                "Description: ",
+                weapon.description
             )
         );
     });

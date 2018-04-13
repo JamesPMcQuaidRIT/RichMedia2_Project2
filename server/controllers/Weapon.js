@@ -9,19 +9,20 @@ const weaponPage = (req, res) => {
       return res.status(400).json({ error: 'An error occurred' });
     }
 
-    return res.json({weapon: docs});
+    return res.json({ weapon: docs });
   });
 };
 
 const makeWeapon = (req, res) => {
   console.dir(req.body);
-  if (!req.body.name || !req.body.type || !req.body.rarity || !req.body.damage || !req.body.description) {
+  if (!req.body.name || !req.body.type || !req.body.rarity ||
+      !req.body.damage || !req.body.description) {
     return res.status(400).json({ error: 'Dear Adventurer, you must fill all fields' });
   }
-    
- if(parseInt(req.body.rarity) < parseInt(req.body.damage)){
-     return res.status(400).json({ error: 'That Weapon is too powerful for how common it is' });
- }
+
+  if (parseInt(req.body.rarity, 10) < parseInt(req.body.damage, 10)) {
+    return res.status(400).json({ error: 'That Weapon is too powerful for how common it is' });
+  }
 
   const weaponData = {
     name: req.body.name,

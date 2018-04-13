@@ -11,6 +11,10 @@ const logout = (req, res) => {
   res.redirect('/');
 };
 
+const fourofourPage = (req, res) => {
+  res.redirect('/');
+};
+
 const login = (request, response) => {
   const req = request;
   const res = response;
@@ -56,7 +60,7 @@ const signup = (request, response) => {
       salt,
       password: hash,
     };
-
+      
     const newAccount = new Account.AccountModel(accountData);
 
     const savePromise = newAccount.save();
@@ -77,16 +81,31 @@ const signup = (request, response) => {
   });
 };
 
-const changePassword = (request, response) => { 
-    Account.AccountModel.generateHash(req.body.pass, (salt, hash) => {
-                                      
-        Account.AccountModel.changePassword(req.session.account._id, req.body.pass, (err, doc) => {
-        if (err) {
-          console.log(err);
-          return res.status(400).json({ error: 'An error occured' });
+const changePassword = (request, response) => {
+  const req = request;
+  const res = response;
+
+  if (!req.body.pass || !req.body.pass2) {
+    return res.status(400).json({ error: 'Dear Adventurer you must fill all fields' });
+  }
+
+  if (req.body.pass !== req.body.pass2) {
+    return res.status(400).json({ error: 'Your given passcodes do not match' });
+  }
+
+  return Account.AccountModel.generateHash(req.body.pass, (salt, hash) => {
+    const search = { username: req.session.account.username};
+    const newPassword = { password: hash, salt };
+      
+    console.dir(search);
+            
+    return Account.AccountModel.findOneAndUpdate(search, {$set: newPassword}, (error) => {
+        if (error) {
+          return res.status(401).json({ error: 'Could not update passcode' });
         }
-      });
-    };
+        return res.json({ redirect: '/marker' });
+    });
+  });
 };
 
 const getToken = (request, response) => {
@@ -101,6 +120,8 @@ const getToken = (request, response) => {
 };
 
 module.exports.loginPage = loginPage;
+module.exports.fourofour = fourofourPage;
+module.exports.changePassword = changePassword;
 module.exports.login = login;
 module.exports.logout = logout;
 module.exports.signup = signup;

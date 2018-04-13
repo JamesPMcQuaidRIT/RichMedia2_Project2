@@ -105,7 +105,7 @@ const AdventurerForm = (props) => {
          <option value="Monk">Monk</option>  
         <option value="Paladin">Paladin</option>  
         <option value="Rogue">Rogue</option>  
-        <option value="Wizard">Wizard</option>  
+        <option value="Wizard">Wizard</option> 
     </select>
     <input id="csrfValue" type="hidden" name="_csrf" value={props.csrf}/>
     <input className="makeAdventurerSubmit" type="submit" value="Make Adventurer" />
@@ -117,7 +117,7 @@ const AdventurerList = function(props) {
     if(props.adventurers.length === 0) {
         return (
             <div className="adventurerList">
-                <h3 className="emptyAdventurer">No Adventurers yet</h3>
+                <h3 className="empty">No Adventurers yet</h3>
             </div>
         );
     }
@@ -187,7 +187,7 @@ const SpellForm = (props) => {
     <input id="spellName" type="text" name="name" placeholder="Spell Name"/>
     <label htmlFor="level">Level: </label>
     <input id="spellLevel" type="text" name="level" placeholder="Spell Level"/>
-    <label htmlFor="purpose">Spell's Purpose: </label>
+    <label htmlFor="purpose">Purpose: </label>
     <input id="spellPurpose" type="text" name="purpose" placeholder="Spell's Purpose"/>
     <input id="csrfValue" type="hidden" name="_csrf" value={props.csrf}/>
     <input className="makeSpellSubmit" type="submit" value="Make Spell" />
@@ -199,7 +199,7 @@ const SpellList = function(props) {
     if(props.spells.length === 0) {
         return (
             <div className="spellList">
-                <h3 className="emptySpells">No Spells created yet</h3>
+                <h3 className="empty">No Spells created yet</h3>
             </div>
         );
     }
@@ -207,10 +207,10 @@ const SpellList = function(props) {
     const spellNodes = props.spells.map(function(spell) {
         return (
             <div data-key={spell._id} className="adventurer">
-                <img src="/assets/img/adventurerface.png" alt="adventurer face" className="adventurerFace" />
+                <img src="/assets/img/magicIcon.png" alt="adventurer face" className="adventurerFace" />
                 <h3 className="adventurerName">Name: {spell.name}</h3>
                 <h3 className="adventurerAge">Level: {spell.level}</h3>
-                <h3 className="adventurerClass">Spell's Purpose: {spell.purpose}</h3>
+                <h3 className="adventurerClass">Purpose: {spell.purpose}</h3>
             </div>
         );
     });
@@ -256,14 +256,14 @@ const WeaponForm = (props) => {
     >
     <label htmlFor="name">Name: </label>
     <input id="weaponName" type="text" name="name" placeholder="Weapon Name"/>
-    <label htmlFor="type">Weapon Type: </label>
+    <label htmlFor="type">Type: </label>
     <input id="weaponType" type="text" name="type" placeholder="Weapon Type"/>
     <label htmlFor="rarity">Rarity: </label>
     <input id="weaponRarity" type="text" name="rarity" placeholder="Weapon Rarity"/>
     <label htmlFor="damage">Damage: </label>
     <input id="weaponDamage" type="text" name="damage" placeholder="Weapon Damage"/>
     <label htmlFor="description">Description: </label>
-    <input id="weaponDescription" type="text" name="description" placeholder="Weapon's Description"/>
+    <input id="weaponDescription" type="text" name="description" placeholder="Weapon Description"/>
     <input id="csrfValue" type="hidden" name="_csrf" value={props.csrf}/>
     <input className="makeWeaponSubmit" type="submit" value="Make Weapon" />
     </form>
@@ -274,18 +274,21 @@ const WeaponList = function(props) {
     if(props.weapons.length === 0) {
         return (
             <div className="weaponList">
-                <h3 className="emptyWeapons">No Weapons created yet</h3>
+                <h3 className="empty">No Weapons created yet</h3>
             </div>
         );
     }
     
     const weaponNodes = props.weapons.map(function(weapon) {
+        console.dir(weapon.description);
         return (
             <div data-key={weapon._id} className="adventurer">
-                <img src="/assets/img/adventurerface.png" alt="adventurer face" className="adventurerFace" />
-                <h3 className="adventurerName">Name: {weapon.name}</h3>
-                <h3 className="adventurerAge">Level: {weapon.level}</h3>
-                <h3 className="adventurerClass">Weapon's Purpose: {weapon.purpose}</h3>
+                <img src="/assets/img/weaponIcon.png" alt="adventurer face" className="adventurerFace" />
+                <h3 className="weaponName">Name: {weapon.name}</h3>
+                <h3 className="weaponType">Type: {weapon.type}</h3>
+                <h3 className="weaponRarity">Rarity: {weapon.rarity}</h3>
+                <h3 className="weaponDamage">Damage: {weapon.damage}</h3>
+                <h3 className="weaponDescription">Description: {weapon.description}</h3>
             </div>
         );
     });

@@ -16,8 +16,9 @@ const router = (app) => {
   app.get('/getWeapons', mid.requiresLogin, controllers.Weapon.weaponPage);
   app.post('/weaponMaker', mid.requiresLogin, controllers.Weapon.makeWeapon);
   app.get('/changePassword', mid.requiresLogin, controllers.Weapon.weaponPage);
-  app.post('/passwordChange', mid.requiresLogin, controllers.Weapon.makeWeapon);
+  app.post('/passwordChange', mid.requiresLogin, controllers.Account.changePassword);
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
+  app.get('*', controllers.Account.fourofour);
 };
 
 module.exports = router;

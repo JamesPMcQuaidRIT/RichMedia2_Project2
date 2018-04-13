@@ -82,17 +82,6 @@ AccountModel.findByUsername(username, (err, doc) => {
   });
 });
 
-AccountSchema.statics.changePassword = (accountId, newPass, callback) => {
- const salt = crypto.randomBytes(saltLength);
-
-  crypto.pbkdf2(newPass, salt, iterations, keyLength, 'RSA-SHA512', (err, hash) =>
-    callback(salt, hash.toString('hex'))
-  );
-    
-  return AccountModel.findOneAndUpdate({_id : accountId}, $set: {password: newPass}).exec(callback);
-};
-
-
 AccountModel = mongoose.model('Account', AccountSchema);
 
 module.exports.AccountModel = AccountModel;

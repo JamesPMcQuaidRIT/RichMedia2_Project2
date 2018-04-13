@@ -14,7 +14,7 @@ const WeaponSchema = new mongoose.Schema({
     trim: true,
     set: setName,
   },
-    
+
   type: {
     type: String,
     required: true,
@@ -26,7 +26,7 @@ const WeaponSchema = new mongoose.Schema({
     min: 0,
     required: true,
   },
-    
+
   damage: {
     type: Number,
     min: 0,
@@ -63,7 +63,7 @@ WeaponSchema.statics.findByOwner = (ownerId, callback) => {
     owner: convertId(ownerId),
   };
 
-  return WeaponModel.find(search).select('name type rarity damage descritption').exec(callback);
+  return WeaponModel.find(search).select('name type rarity damage description').exec(callback);
 };
 
 WeaponModel = mongoose.model('Weapon', WeaponSchema);
