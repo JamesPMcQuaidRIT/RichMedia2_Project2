@@ -94,7 +94,7 @@ var SignupWindow = function SignupWindow(props) {
         React.createElement(
             "label",
             { "for": "pass2" },
-            "Password: "
+            "Password Again: "
         ),
         React.createElement("input", { id: "pass2", type: "password", name: "pass2", placeholder: "retype password" }),
         React.createElement("input", { type: "hidden", name: "_csrf", value: props.csrf }),

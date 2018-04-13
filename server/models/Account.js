@@ -82,6 +82,16 @@ AccountModel.findByUsername(username, (err, doc) => {
   });
 });
 
+/*AccountSchema.statics.changePassword = () {
+  const search = {
+    owner: convertId(ownerId),
+    _id: convertId(searchedId),
+  };
+
+  return AdventurerModel.findOne(search).exec(callback);
+};*/
+
+
 AccountModel = mongoose.model('Account', AccountSchema);
 
 module.exports.AccountModel = AccountModel;

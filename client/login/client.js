@@ -72,7 +72,7 @@ const SignupWindow = (props) => {
     <input id="user" type="text" name="username" placeholder="username"/>
     <label for="pass">Password: </label>
     <input id="pass" type="password" name="pass" placeholder="password"/>
-    <label for="pass2">Password: </label>
+    <label for="pass2">Password Again: </label>
     <input id="pass2" type="password" name="pass2" placeholder="retype password"/>
     <input type="hidden" name="_csrf" value={props.csrf}/>
     <input className="formSubmit" type="submit" value="Sign Up" />

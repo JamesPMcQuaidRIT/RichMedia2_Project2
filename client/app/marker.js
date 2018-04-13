@@ -9,7 +9,9 @@ const handleAdventurer = (e) => {
         handleError("Dear Adventurer, you must fill all fields");
         return false;
     }
-            
+       
+    console.dir($("#adventurerForm").serialize());
+    
     sendAjax('POST', $("#adventurerForm").attr("action"), $("#adventurerForm").serialize(), function(){
         loadAdventurersFromServer(token);
     });
@@ -37,11 +39,50 @@ const handleSpell = (e) => {
         return false;
     }
     
-    console.dir($("#spellForm").serialize())
+    console.dir($("#spellForm").serialize());
             
     sendAjax('POST', $("#spellForm").attr("action"), $("#spellForm").serialize(), function(){
         loadSpellsFromServer(token);
     });
+    
+    return false;
+};
+
+const handleWeapon = (e) => {
+    e.preventDefault();
+    
+    $("#adventurerMessage").animate({width: 'hide'}, 350);
+    
+    if($("#weaponName").val() == '' || $("#weaponType").val() == '') {
+        handleError("Dear Adventurer, you must fill all fields");
+        return false;
+    }
+    
+    console.dir($("#weaponForm").serialize());
+            
+    sendAjax('POST', $("#weaponForm").attr("action"), $("#weaponForm").serialize(), function(){
+        loadWeaponsFromServer(token);
+    });
+    
+    return false;
+};
+
+const handlePassword = (e) => {
+    e.preventDefault();
+    
+    $("#adventurerMessage").animate({width: 'hide'}, 350);
+    
+    if($("#pass").val() == '' || $("#pass2").val() == '') {
+        handleError("Dear Adventurer, you must fill all fields");
+        return false;
+    }
+        
+    if($("#pass").val() !== $("#pass2").val()) {
+        handleError("You passcodes do not match");
+        return false;
+    }    
+    
+    sendAjax('POST', $("#passwordForm").attr("action"), $("#passwordForm").serialize(), redirect);
     
     return false;
 };
@@ -200,6 +241,105 @@ const createSpellWindow = (csrf) => {
     );
 }
 
+const WeaponForm = (props) => {
+    return (
+    <form id="weaponForm" 
+        onSubmit={handleWeapon}
+        name="weaponForm"
+        action="/weaponMaker"
+        method="POST"
+        className="weaponForm"
+    >
+    <label htmlFor="name">Name: </label>
+    <input id="weaponName" type="text" name="name" placeholder="Weapon Name"/>
+    <label htmlFor="type">Weapon Type: </label>
+    <input id="weaponType" type="text" name="type" placeholder="Weapon Type"/>
+    <label htmlFor="rarity">Rarity: </label>
+    <input id="weaponRarity" type="text" name="rarity" placeholder="Weapon Rarity"/>
+    <label htmlFor="damage">Damage: </label>
+    <input id="weaponDamage" type="text" name="damage" placeholder="Weapon Damage"/>
+    <label htmlFor="description">Description: </label>
+    <input id="weaponDescription" type="text" name="description" placeholder="Weapon's Description"/>
+    <input id="csrfValue" type="hidden" name="_csrf" value={props.csrf}/>
+    <input className="makeWeaponSubmit" type="submit" value="Make Weapon" />
+    </form>
+    );
+};
+
+const WeaponList = function(props) {
+    if(props.weapons.length === 0) {
+        return (
+            <div className="weaponList">
+                <h3 className="emptyWeapons">No Weapons creasted yet</h3>
+            </div>
+        );
+    }
+    
+    const weaponNodes = props.weapons.map(function(weapon) {
+        return (
+            <div data-key={weapon._id} className="adventurer">
+                <img src="/assets/img/adventurerface.png" alt="adventurer face" className="adventurerFace" />
+                <h3 className="adventurerName">Name: {weapon.name}</h3>
+                <h3 className="adventurerAge">Level: {weapon.level}</h3>
+                <h3 className="adventurerClass">Weapon's Purpose: {weapon.purpose}</h3>
+            </div>
+        );
+    });
+    
+    return (
+    <div className="weaponList">
+        {weaponNodes}
+    </div>
+    );
+};
+
+
+
+const loadWeaponsFromServer = (csrf) => {
+    sendAjax('GET', '/getWeapons', null, (data) => {
+        ReactDOM.render(
+            <WeaponList weapons={data.weapon} csrf={csrf} />, document.querySelector("#data")
+        );
+    });
+};
+
+
+const createWeaponWindow = (csrf) => {
+    ReactDOM.render(
+        <WeaponForm csrf={csrf} />, document.querySelector("#make")
+    );
+    
+    ReactDOM.render(
+        <WeaponList weapons={[]} csrf={csrf}/>, document.querySelector("#data")
+    );
+}
+
+const PasswordWindow = (props) => {
+    return (
+    <form id="passwordForm" 
+        name="passwordForm"
+        onSubmit={handlePassword}
+        action="/passwordChange"
+        method="POST"
+        className="mainForm"
+    >
+    <label for="pass">New Password: </label>
+    <input id="pass" type="password" name="pass" placeholder="password"/>
+    <label for="pass2">New Password Again: </label>
+    <input id="pass2" type="password" name="pass2" placeholder="retype password"/>
+    <input type="hidden" name="_csrf" value={props.csrf}/>
+    <input className="formSubmit" type="submit" value="Sign Up" />
+    </form>
+    );
+};
+
+const createPasswordWindow = (csrf) => {
+    ReactDOM.render(
+    <PasswordWindow csrf={csrf} />,
+    document.querySelector("#data")
+    );
+};
+
 const setup = function(csrf) {
     
     token = csrf;
@@ -222,7 +362,7 @@ const setup = function(csrf) {
     
     weaponButton.addEventListener("click", (e) => {
         e.preventDefault();
-        createSpellWindow(csrf);
+        createWeaponWindow(csrf);
         return false;
     });
     
